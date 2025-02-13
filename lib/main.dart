@@ -95,11 +95,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           MaterialPageRoute(
                               builder: (context) => const HomePage()));
                     },
-                    child: const Text(
-                      'Login',
-                      style:
-                          TextStyle(color: Color.fromARGB(121, 234, 93, 163)),
-                    ),
+                    child: const Text('Login',
+                        style: TextStyle(
+                            color: Color.fromARGB(121, 234, 93, 163),
+                            fontSize: 15)),
                   )
                 ],
               ),
