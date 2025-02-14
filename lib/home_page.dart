@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
                   title: const Text(
                     'Logout',
                     style: TextStyle(
-                        color: Color.fromARGB(121, 255, 0, 128), fontSize: 10),
+                        color: Color.fromARGB(121, 255, 0, 128), fontSize: 15),
                   ),
                   onTap: () {
                     Navigator.push(context,
