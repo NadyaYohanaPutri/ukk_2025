@@ -39,15 +39,48 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final user = TextEditingController();
+  final pass = TextEditingController();
+  final SupabaseClient supabase = Supabase.instance.client;
+
+  Future<void> login() async {
+    final username = user.text;
+    final password = pass.text;
+
+    if (username.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Input tidak boleh kosong')));
+      return;
+    }
+
+    try {
+      final response = await supabase
+          .from('user')
+          .select('Username, Password')
+          .eq('Username', username)
+          .single();
+
+      if (response != null && response['Password'] == password) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => const HomePage()));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Input kosong salah satu')));
+      }
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('username/password salah')));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: const Color.fromARGB(121, 255, 184, 219),
+          backgroundColor: const Color.fromARGB(121, 255, 0, 128),
         ),
         body: Container(
-          decoration:
-              const BoxDecoration(color: Color.fromARGB(121, 180, 231, 235)),
+          decoration: const BoxDecoration(color: Colors.white),
           child: Center(
             child: Container(
               padding: const EdgeInsets.all(15),
@@ -57,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   const Text(
                     'Login Dulu Ya!',
                     style: TextStyle(
-                        color: Color.fromARGB(121, 234, 93, 163),
+                        color: Color.fromARGB(121, 255, 0, 128),
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
                   ),
@@ -65,10 +98,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     height: 10,
                   ),
                   TextField(
+                    controller: user,
                     decoration: InputDecoration(
                         hintText: 'Username',
                         hintStyle: const TextStyle(
-                            color: Color.fromARGB(121, 234, 93, 163),
+                            color: Color.fromARGB(121, 255, 0, 128),
                             fontSize: 16),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30))),
@@ -77,10 +111,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     height: 10,
                   ),
                   TextField(
+                    controller: pass,
                     decoration: InputDecoration(
                         hintText: 'Password',
                         hintStyle: const TextStyle(
-                            color: Color.fromARGB(121, 234, 93, 163),
+                            color: Color.fromARGB(121, 255, 0, 128),
                             fontSize: 16),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30))),
@@ -89,15 +124,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     height: 15,
                   ),
                   ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomePage()));
-                    },
+                    onPressed: login,
                     child: const Text('Login',
                         style: TextStyle(
-                            color: Color.fromARGB(121, 234, 93, 163),
+                            color: Color.fromARGB(121, 255, 0, 128),
                             fontSize: 15)),
                   )
                 ],
