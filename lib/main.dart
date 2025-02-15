@@ -43,6 +43,12 @@ class _MyHomePageState extends State<MyHomePage> {
   final pass = TextEditingController();
   final SupabaseClient supabase = Supabase.instance.client;
 
+  final List<Map<String, String>> dummyUser = [
+    {"Username": "Nadya", "Password": "111"},
+    {"Username": "Yohana", "Password": "222"},
+    {"Username": "Putri", "Password": "333"}
+  ];
+
   Future<void> login() async {
     final username = user.text;
     final password = pass.text;
@@ -53,12 +59,22 @@ class _MyHomePageState extends State<MyHomePage> {
       return;
     }
 
+    final validDummyUser = dummyUser.any(
+      (u) => u["Username"] == user && u["Password"] == pass,
+    );
+
+    if (validDummyUser) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const HomePage()));
+      return;
+    }
+
     try {
       final response = await supabase
           .from('user')
           .select('Username, Password')
           .eq('Username', username)
-          .single();
+          .maybeSingle();
 
       if (response != null && response['Password'] == password) {
         Navigator.pushReplacement(

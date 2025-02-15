@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application_1/produk/index_produk.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class InsertProduk extends StatefulWidget {
   const InsertProduk({super.key});
@@ -9,6 +11,45 @@ class InsertProduk extends StatefulWidget {
 }
 
 class _InsertProdukState extends State<InsertProduk> {
+  final fromKey = GlobalKey<FormState>();
+  final nama = TextEditingController();
+  final harga = TextEditingController();
+  final stok = TextEditingController();
+  final supabase = Supabase.instance.client;
+
+  Future<void> simpanProduk() async {
+    if (fromKey.currentState!.validate()) {
+      final sambungData = await supabase
+          .from('produk')
+          .select('NamaProduk')
+          .eq('NamaProduk', nama.text)
+          .maybeSingle();
+
+      if (sambungData != null) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Tidak boleh ada data produk ganda!')));
+        return;
+      }
+      await supabase.from('produk').insert(
+          {'NamaProduk': nama.text, 'Harga': harga.text, 'Stok': stok.text});
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const IndexProduk()));
+    }
+  }
+
+  Widget _buildTextField(TextEditingController controller, String label,
+      {bool isNumber = false}) {
+    return TextFormField(
+      controller: controller,
+      keyboardType: isNumber ? TextInputType.number : TextInputType.text,
+      inputFormatters: isNumber ? [FilteringTextInputFormatter.digitsOnly] : [],
+      decoration:
+          InputDecoration(labelText: label, border: const OutlineInputBorder()),
+      validator: (value) =>
+          (value == null || value.isEmpty) ? '$label tidak boleh kosong' : null,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,64 +70,27 @@ class _InsertProdukState extends State<InsertProduk> {
                 color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
           ),
         ),
-        body: Container(
-          decoration: const BoxDecoration(color: Colors.white),
-          child: Center(
-            child: Container(
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Login Dulu Ya!',
-                    style: TextStyle(
-                        color: Color.fromARGB(121, 255, 0, 128),
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    decoration: InputDecoration(
-                        hintText: 'Username',
-                        hintStyle: const TextStyle(
-                            color: Color.fromARGB(121, 255, 0, 128),
-                            fontSize: 16),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30))),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    decoration: InputDecoration(
-                        hintText: 'Password',
-                        hintStyle: const TextStyle(
-                            color: Color.fromARGB(121, 255, 0, 128),
-                            fontSize: 16),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30))),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const IndexProduk()));
-                    },
-                    child: const Text('Simpan',
-                        style: TextStyle(
-                            color: Color.fromARGB(121, 255, 0, 128),
-                            fontSize: 15)),
-                  )
-                ],
+        body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: fromKey,
+          child: Column(
+            children: [
+              _buildTextField(nama, 'Nama Pelanggan'),
+              const SizedBox(height: 10),
+              _buildTextField(harga, 'Alamat', isNumber: true),
+              const SizedBox(height: 10),
+              _buildTextField(stok, 'Nomor Telepon', isNumber: true), // isNumber: true = Input hanya akan menerima angka
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: simpanProduk,
+                style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(121, 255, 0, 128)),
+                child: const Text('Simpan', style: TextStyle(color: Colors.white)),
               ),
-            ),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

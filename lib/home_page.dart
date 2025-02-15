@@ -4,6 +4,7 @@ import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/pelanggan/index_pelanggan.dart';
 import 'package:flutter_application_1/penjualan/index_penjualan.dart';
 import 'package:flutter_application_1/produk/index_produk.dart';
+import 'package:flutter_application_1/user/index_user.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -41,6 +42,26 @@ class _HomePageState extends State<HomePage> {
                       Navigator.pop(context);
                     },
                   ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                ListTile(
+                  leading: const Icon(
+                    Icons.people_alt,
+                    color: Color.fromARGB(121, 255, 0, 128),
+                  ),
+                  title: const Text(
+                    'User',
+                    style: TextStyle(
+                        color: Color.fromARGB(121, 255, 0, 128), fontSize: 15),
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const IndexUser()));
+                  },
                 ),
                 const SizedBox(
                   height: 10,
