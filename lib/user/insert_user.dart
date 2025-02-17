@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_application_1/user/index_user.dart';
+import 'package:flutter_application_1/home_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class InsertUser extends StatefulWidget {
@@ -12,17 +12,21 @@ class InsertUser extends StatefulWidget {
 
 class _InsertUserState extends State<InsertUser> {
   final formKey = GlobalKey<FormState>();
-  final user = TextEditingController();
+  final username = TextEditingController();
   final pass = TextEditingController();
   final supabase = Supabase.instance.client;
 
-  Future<void> simpanUser() async {
-    if (!formKey.currentState!.validate()) {
+  Future<void> simpan() async {
+    if (formKey.currentState!.validate()) {
+      // Untuk mengcek apakah NamaPelanggan sudah ada
       final simpanData = await supabase
           .from('user')
           .select('Username')
-          .eq('Username', user.text)
+          .eq('Username', username.text)
           .maybeSingle();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Data berhasil disimpan')));
 
       if (simpanData != null) {
         // Untuk menampilkan pesan error jika data sudah ada
@@ -34,12 +38,12 @@ class _InsertUserState extends State<InsertUser> {
 
       // Untuk menyimpan data jika data belum ada
       await supabase.from('user').insert({
-        'Username': user.text,
+        'Username': username.text,
         'Password': pass.text,
       });
 
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const IndexUser()));
+          context, MaterialPageRoute(builder: (context) => const HomePage()));
     }
   }
 
@@ -67,8 +71,7 @@ class _InsertUserState extends State<InsertUser> {
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text('Tambah Pelanggan',
-            style: TextStyle(color: Colors.white)),
+        title: const Text('Tambah User', style: TextStyle(color: Colors.white)),
         backgroundColor: const Color.fromARGB(121, 255, 0, 128),
       ),
       body: Padding(
@@ -77,12 +80,14 @@ class _InsertUserState extends State<InsertUser> {
           key: formKey,
           child: Column(
             children: [
-              _buildTextField(user, 'Username'),
+              _buildTextField(username, 'Username'),
               const SizedBox(height: 10),
-              _buildTextField(pass, 'Password', isNumber: true),
-              const SizedBox(height: 10),
+              _buildTextField(pass, 'Password',
+                  isNumber:
+                      true), // isNumber: true = Input hanya akan menerima angka
+              const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: simpanUser,
+                onPressed: simpan,
                 style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(121, 255, 0, 128)),
                 child:

@@ -58,7 +58,9 @@ class _IndexPelangganState extends State<IndexPelanggan> {
         title: const Text('Hapus Pelanggan'),
         content: const Text('Apakah Anda yakin ingin menghapus pelanggan ini?'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Batal')),
+          TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Batal')),
           TextButton(
             onPressed: () {
               hapusPelanggan(id);
@@ -74,14 +76,6 @@ class _IndexPelangganState extends State<IndexPelanggan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(121, 255, 0, 128),
-        title: const Text("Daftar Pelanggan", style: TextStyle(color: Colors.white)),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
       body: Column(
         children: [
           Padding(
@@ -90,8 +84,10 @@ class _IndexPelangganState extends State<IndexPelanggan> {
               controller: cari,
               decoration: InputDecoration(
                 labelText: "Cari Pelanggan...",
-                prefixIcon: const Icon(Icons.search, color: Color.fromARGB(121, 255, 0, 128)),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                prefixIcon: const Icon(Icons.search,
+                    color: Color.fromARGB(121, 255, 0, 128)),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
               ),
             ),
           ),
@@ -100,7 +96,10 @@ class _IndexPelangganState extends State<IndexPelanggan> {
                 ? const Center(
                     child: Text(
                       'Tidak Ada Data Pelanggan',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color.fromARGB(121, 255, 0, 128)),
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(121, 255, 0, 128)),
                     ),
                   )
                 : ListView.builder(
@@ -111,29 +110,43 @@ class _IndexPelangganState extends State<IndexPelanggan> {
                       return Card(
                         elevation: 4,
                         margin: const EdgeInsets.symmetric(vertical: 8),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
                         child: ListTile(
-                          title: Text(p['NamaPelanggan'] ?? 'Pelanggan tidak tersedia', style: const TextStyle(fontWeight: FontWeight.bold)),
+                          title: Text(
+                              p['NamaPelanggan'] ?? 'Pelanggan tidak tersedia',
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(p['Alamat'] ?? 'Alamat Tidak tersedia', style: const TextStyle(fontStyle: FontStyle.italic, color: Colors.grey)),
-                              Text(p['NomorTelepon'] ?? 'Tidak tersedia', style: const TextStyle(fontWeight: FontWeight.bold)),
+                              Text(p['Alamat'] ?? 'Alamat Tidak tersedia',
+                                  style: const TextStyle(
+                                      fontStyle: FontStyle.italic,
+                                      color: Colors.grey)),
+                              Text(p['NomorTelepon'] ?? 'Tidak tersedia',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold)),
                             ],
                           ),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               IconButton(
-                                icon: const Icon(Icons.edit, color: Colors.blue),
+                                icon:
+                                    const Icon(Icons.edit, color: Colors.blue),
                                 onPressed: () => Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => UpdatePelanggan(PelangganID: p['PelangganID'] ?? 0)),
+                                  MaterialPageRoute(
+                                      builder: (context) => UpdatePelanggan(
+                                          PelangganID: p['PelangganID'] ?? 0)),
                                 ),
                               ),
                               IconButton(
-                                icon: const Icon(Icons.delete, color: Colors.red),
-                                onPressed: () => konfirmasiHapus(p['PelangganID']),
+                                icon:
+                                    const Icon(Icons.delete, color: Colors.red),
+                                onPressed: () =>
+                                    konfirmasiHapus(p['PelangganID']),
                               ),
                             ],
                           ),
@@ -145,7 +158,8 @@ class _IndexPelangganState extends State<IndexPelanggan> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const InsertPelanggan())),
+        onPressed: () => Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const InsertPelanggan())),
         backgroundColor: const Color.fromARGB(121, 255, 0, 128),
         child: const Icon(Icons.add, color: Colors.white),
       ),

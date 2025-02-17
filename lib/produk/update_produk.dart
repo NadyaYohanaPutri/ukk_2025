@@ -12,7 +12,7 @@ class UpdateProduk extends StatefulWidget {
 }
 
 class _UpdateProdukState extends State<UpdateProduk> {
-  final fromKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   final nama = TextEditingController();
   final harga = TextEditingController();
   final stok = TextEditingController();
@@ -33,27 +33,28 @@ class _UpdateProdukState extends State<UpdateProduk> {
 
     setState(() {
       nama.text = data['NamaProduk'] ?? '';
-      harga.text = data['Harga'] ?? '';
-      stok.text = data['Stok'] ?? '';
+      harga.text = data['Harga']?.toString() ?? '';
+      stok.text = data['Stok']?.toString() ?? '';
     });
   }
 
   Future<void> updateProduk() async {
-    if (fromKey.currentState!.validate()) {
+    if (formKey.currentState!.validate()) {
       await supabase.from('produk').update({
         'NamaProduk': nama.text,
-        'Harga': harga.text,
-        'Stok': stok.text,
+        'Harga': double.tryParse(harga.text),
+        'Stok': int.tryParse(stok.text),
       }).eq('ProdukID', widget.ProdukID);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Data berhasil diperbarui!')),
+        const SnackBar(content: Text('Data berhasil diperbarui!')),
       );
 
       Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-          (route) => false);
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+        (route) => false,
+      );
     }
   }
 
@@ -61,32 +62,36 @@ class _UpdateProdukState extends State<UpdateProduk> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(121, 255, 0, 128),
-        title: Text(
-          'Edit Produk',
-          style: TextStyle(
-              color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-        ),
+        title: const Text('Edit Pelanggan',
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold)),
+        backgroundColor: const Color.fromARGB(121, 255, 0, 128),
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.white,
-          ),
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
-          key: fromKey,
+          key: formKey,
           child: Column(
             children: [
               _buildTextField(nama, 'Nama Produk'),
-              SizedBox(height: 10,),
-              _buildTextField(harga, 'Harga'),
-              SizedBox(height: 10,),
-              _buildTextField(stok, 'Stok'),
-              SizedBox(height: 10)
+              const SizedBox(height: 10),
+              _buildTextField(harga, 'Harga', isNumber: true),
+              const SizedBox(height: 10),
+              _buildTextField(stok, 'Stok', isNumber: true),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: updateProduk,
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(121, 255, 0, 128)),
+                child:
+                    const Text('Update', style: TextStyle(color: Colors.white)),
+              ),
             ],
           ),
         ),
@@ -100,7 +105,8 @@ class _UpdateProdukState extends State<UpdateProduk> {
       controller: controller,
       keyboardType: isNumber ? TextInputType.number : TextInputType.text,
       inputFormatters: isNumber ? [FilteringTextInputFormatter.digitsOnly] : [],
-      decoration: InputDecoration(labelText: label, border: const OutlineInputBorder()),
+      decoration:
+          InputDecoration(labelText: label, border: const OutlineInputBorder()),
       validator: (value) => value!.isEmpty ? '$label tidak boleh kosong' : null,
     );
   }

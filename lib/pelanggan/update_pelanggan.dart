@@ -62,7 +62,11 @@ class _UpdatePelangganState extends State<UpdatePelanggan> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Pelanggan', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+        title: const Text('Edit Pelanggan',
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold)),
         backgroundColor: const Color.fromARGB(121, 255, 0, 128),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
@@ -83,8 +87,10 @@ class _UpdatePelangganState extends State<UpdatePelanggan> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: updatePelanggan,
-                style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(121, 255, 0, 128)),
-                child: const Text('Update', style: TextStyle(color: Colors.white)),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(121, 255, 0, 128)),
+                child:
+                    const Text('Update', style: TextStyle(color: Colors.white)),
               ),
             ],
           ),
@@ -93,12 +99,14 @@ class _UpdatePelangganState extends State<UpdatePelanggan> {
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String label, {bool isNumber = false}) {
+  Widget _buildTextField(TextEditingController controller, String label,
+      {bool isNumber = false}) {
     return TextFormField(
       controller: controller,
       keyboardType: isNumber ? TextInputType.number : TextInputType.text,
       inputFormatters: isNumber ? [FilteringTextInputFormatter.digitsOnly] : [],
-      decoration: InputDecoration(labelText: label, border: const OutlineInputBorder()),
+      decoration:
+          InputDecoration(labelText: label, border: const OutlineInputBorder()),
       validator: (value) => value!.isEmpty ? '$label tidak boleh kosong' : null,
     );
   }

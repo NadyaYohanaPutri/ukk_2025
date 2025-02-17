@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/home_page.dart';
-import 'package:flutter_application_1/user/index_user.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UpdateUser extends StatefulWidget {
@@ -33,17 +32,17 @@ class _UpdateUserState extends State<UpdateUser> {
         .single();
 
     setState(() {
-      user.text = data['UserID'] ?? '';
-      pass.text = data['Password'] ?? '';
+      user.text = (data['Username'] ?? '').toString();
+      pass.text = (data['Password'] ?? '').toString();
     });
   }
 
   Future<void> updatePelanggan() async {
     if (formKey.currentState!.validate()) {
-      await supabase.from('pelanggan').update({
+      await supabase.from('user').update({
         'Username': user.text,
         'Password': pass.text,
-      }).eq('UserID', widget.UserID);
+      }).eq('UserID', widget.UserID.toString());
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Data berhasil diperbarui!')),
@@ -61,7 +60,11 @@ class _UpdateUserState extends State<UpdateUser> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit User', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+        title: const Text('Edit User',
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold)),
         backgroundColor: const Color.fromARGB(121, 255, 0, 128),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
@@ -76,12 +79,14 @@ class _UpdateUserState extends State<UpdateUser> {
             children: [
               _buildTextField(user, 'Username'),
               const SizedBox(height: 10),
-              _buildTextField(pass, 'Password', isNumber: true),
+              _buildTextField(pass, 'Password'),
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: updatePelanggan,
-                style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(121, 255, 0, 128)),
-                child: const Text('Update', style: TextStyle(color: Colors.white)),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(121, 255, 0, 128)),
+                child:
+                    const Text('Update', style: TextStyle(color: Colors.white)),
               ),
             ],
           ),
@@ -90,12 +95,12 @@ class _UpdateUserState extends State<UpdateUser> {
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String label, {bool isNumber = false}) {
+  Widget _buildTextField(TextEditingController controller, String label) {
     return TextFormField(
       controller: controller,
-      keyboardType: isNumber ? TextInputType.number : TextInputType.text,
-      inputFormatters: isNumber ? [FilteringTextInputFormatter.digitsOnly] : [],
-      decoration: InputDecoration(labelText: label, border: const OutlineInputBorder()),
+      keyboardType: TextInputType.text,
+      decoration:
+          InputDecoration(labelText: label, border: const OutlineInputBorder()),
       validator: (value) => value!.isEmpty ? '$label tidak boleh kosong' : null,
     );
   }

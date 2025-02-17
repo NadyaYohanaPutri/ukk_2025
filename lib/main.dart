@@ -92,64 +92,66 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color.fromARGB(121, 255, 0, 128),
-        ),
         body: Container(
-          decoration: const BoxDecoration(color: Colors.white),
-          child: Center(
-            child: Container(
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Login Dulu Ya!',
-                    style: TextStyle(
-                        color: Color.fromARGB(121, 255, 0, 128),
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: user,
-                    decoration: InputDecoration(
-                        hintText: 'Username',
-                        hintStyle: const TextStyle(
-                            color: Color.fromARGB(121, 255, 0, 128),
-                            fontSize: 16),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30))),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: pass,
-                    decoration: InputDecoration(
-                        hintText: 'Password',
-                        hintStyle: const TextStyle(
-                            color: Color.fromARGB(121, 255, 0, 128),
-                            fontSize: 16),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30))),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  ElevatedButton(
-                    onPressed: login,
-                    child: const Text('Login',
-                        style: TextStyle(
-                            color: Color.fromARGB(121, 255, 0, 128),
-                            fontSize: 15)),
-                  )
-                ],
+      decoration: const BoxDecoration(color: Color.fromARGB(121, 255, 0, 128)),
+      child: Center(
+        child: Container(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Toko Permen NyamNyamm',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold),
               ),
-            ),
+              const SizedBox(height: 10),
+              const Text(
+                'Login Dulu Ya!',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontStyle: FontStyle.italic),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextField(
+                controller: user,
+                decoration: InputDecoration(
+                    hintText: 'Username',
+                    hintStyle:
+                        const TextStyle(color: Colors.white, fontSize: 16),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30))),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextField(
+                controller: pass,
+                decoration: InputDecoration(
+                    hintText: 'Password',
+                    hintStyle:
+                        const TextStyle(color: Colors.white, fontSize: 16),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30))),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              ElevatedButton(
+                onPressed: login,
+                child: const Text('Login',
+                    style: TextStyle(
+                        color: Color.fromARGB(121, 255, 0, 128), fontSize: 15)),
+              )
+            ],
           ),
-        ));
+        ),
+      ),
+    ));
   }
 }

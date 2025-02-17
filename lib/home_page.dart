@@ -14,130 +14,87 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _currentIndex = 0;
+
+  final List<Widget> _pages = [
+    const IndexDetailPenjualan(),
+    const IndexProduk(),
+    const IndexPenjualan(),
+    const IndexPelanggan(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color.fromARGB(121, 255, 0, 128),
-          iconTheme: const IconThemeData(color: Colors.white),
-        ),
-        drawer: Drawer(
-          child: Container(
-            decoration: const BoxDecoration(color: Colors.white),
-            child: ListView(
-              children: [
-                DrawerHeader(
-                  decoration: const BoxDecoration(
-                      color: Color.fromARGB(121, 255, 0, 128)),
-                  child: ListTile(
-                    leading: const Icon(
-                      Icons.arrow_back_ios,
-                      color: Colors.white,
-                    ),
-                    title: const Text(
-                      'Pengaturan',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                ListTile(
-                  leading: const Icon(
-                    Icons.people_alt,
-                    color: Color.fromARGB(121, 255, 0, 128),
-                  ),
-                  title: const Text(
-                    'User',
-                    style: TextStyle(
-                        color: Color.fromARGB(121, 255, 0, 128), fontSize: 15),
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const IndexUser()));
-                  },
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                ListTile(
-                  leading: const Icon(
-                    Icons.logout_outlined,
-                    color: Color.fromARGB(121, 255, 0, 128),
-                  ),
-                  title: const Text(
-                    'Logout',
-                    style: TextStyle(
-                        color: Color.fromARGB(121, 255, 0, 128), fontSize: 15),
-                  ),
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const MyApp()));
-                  },
-                )
-              ],
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(121, 255, 0, 128),
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text('Toko Permen NyamNyamm',
+            style: TextStyle(color: Colors.white)),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(
+              decoration:
+                  const BoxDecoration(color: Color.fromARGB(121, 255, 0, 128)),
+              child: ListTile(
+                leading: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                title: const Text('Pengaturan',
+                    style: TextStyle(fontSize: 16, color: Colors.white)),
+                onTap: () => Navigator.pop(context),
+              ),
             ),
-          ),
+            ListTile(
+              leading: const Icon(Icons.people,
+                  color: Color.fromARGB(121, 255, 0, 128)),
+              title: const Text('User',
+                  style: TextStyle(color: Color.fromARGB(121, 255, 0, 128))),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const IndexUser()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout,
+                  color: Color.fromARGB(121, 255, 0, 128)),
+              title: const Text('Logout',
+                  style: TextStyle(color: Color.fromARGB(121, 255, 0, 128))),
+              onTap: () {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MyApp()),
+                    (route) => false);
+              },
+            ),
+          ],
         ),
-        body: Center(
-            child: Container(
-                padding: const EdgeInsets.all(15),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const IndexPelanggan()));
-                        },
-                        child: const Text('Pelanggan',
-                            style: TextStyle(
-                                color: Color.fromARGB(121, 255, 0, 128)))),
-                    const SizedBox(height: 10),
-                    ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const IndexPenjualan()));
-                        },
-                        child: const Text('Penjualan',
-                            style: TextStyle(
-                                color: Color.fromARGB(121, 255, 0, 128)))),
-                    const SizedBox(height: 10),
-                    ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const IndexDetailPenjualan()));
-                        },
-                        child: const Text('Detail Penjualan',
-                            style: TextStyle(
-                                color: Color.fromARGB(121, 255, 0, 128)))),
-                    const SizedBox(height: 10),
-                    ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const IndexProduk()));
-                        },
-                        child: const Text('Produk',
-                            style: TextStyle(
-                                color: Color.fromARGB(121, 255, 0, 128)))),
-                  ],
-                ))));
+      ),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _pages,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        selectedItemColor: Colors.white,
+        backgroundColor: const Color.fromARGB(121, 255, 0, 128),
+        unselectedItemColor: Colors.white,
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_cart), label: 'Detail Penjualan'),
+          BottomNavigationBarItem(icon: Icon(Icons.store), label: 'Produk'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.receipt_long), label: 'Penjualan'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.people_alt), label: 'Pelanggan'),
+        ],
+      ),
+    );
   }
 }
