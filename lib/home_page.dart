@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
         unselectedItemColor: Colors.white,
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart), label: 'Detail Penjualan'),
+              icon: Icon(Icons.folder), label: 'Detail Penjualan'),
           BottomNavigationBarItem(icon: Icon(Icons.store), label: 'Produk'),
           BottomNavigationBarItem(
               icon: Icon(Icons.receipt_long), label: 'Penjualan'),

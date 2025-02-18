@@ -84,6 +84,7 @@ class _IndexPelangganState extends State<IndexPelanggan> {
               controller: cari,
               decoration: InputDecoration(
                 labelText: "Cari Pelanggan...",
+                labelStyle: const TextStyle(color: Color.fromARGB(121, 255, 0, 128)),
                 prefixIcon: const Icon(Icons.search,
                     color: Color.fromARGB(121, 255, 0, 128)),
                 border:
@@ -108,6 +109,7 @@ class _IndexPelangganState extends State<IndexPelanggan> {
                     itemBuilder: (context, index) {
                       final p = mencariPelanggan[index];
                       return Card(
+                        color: const Color.fromARGB(255, 255, 115, 185),
                         elevation: 4,
                         margin: const EdgeInsets.symmetric(vertical: 8),
                         shape: RoundedRectangleBorder(
@@ -115,18 +117,20 @@ class _IndexPelangganState extends State<IndexPelanggan> {
                         child: ListTile(
                           title: Text(
                               p['NamaPelanggan'] ?? 'Pelanggan tidak tersedia',
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold)),
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white)),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(p['Alamat'] ?? 'Alamat Tidak tersedia',
                                   style: const TextStyle(
                                       fontStyle: FontStyle.italic,
-                                      color: Colors.grey)),
+                                      color: Colors.white)),
                               Text(p['NomorTelepon'] ?? 'Tidak tersedia',
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.bold)),
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white)),
                             ],
                           ),
                           trailing: Row(
@@ -134,7 +138,12 @@ class _IndexPelangganState extends State<IndexPelanggan> {
                             children: [
                               IconButton(
                                 icon:
-                                    const Icon(Icons.edit, color: Colors.blue),
+                                    const Icon(Icons.edit, color: Colors.blue,shadows: [
+                                      Shadow(
+                                          color: Colors.white,
+                                          blurRadius: 5,
+                                          offset: Offset(2, 2))
+                                    ],),
                                 onPressed: () => Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -144,7 +153,12 @@ class _IndexPelangganState extends State<IndexPelanggan> {
                               ),
                               IconButton(
                                 icon:
-                                    const Icon(Icons.delete, color: Colors.red),
+                                    const Icon(Icons.delete, color: Colors.red, shadows: [
+                                      Shadow(
+                                          color: Colors.white,
+                                          blurRadius: 5,
+                                          offset: Offset(2, 2))
+                                    ],),
                                 onPressed: () =>
                                     konfirmasiHapus(p['PelangganID']),
                               ),

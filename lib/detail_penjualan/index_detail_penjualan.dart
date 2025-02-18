@@ -9,7 +9,8 @@ class IndexDetailPenjualan extends StatefulWidget {
 }
 
 class _IndexDetailPenjualanState extends State<IndexDetailPenjualan> {
-  final supabase = Supabase.instance.client;
+  final SupabaseClient supabase = Supabase.instance.client;
+
   final TextEditingController cari = TextEditingController();
   List<Map<String, dynamic>> detailList = [];
   List<Map<String, dynamic>> mencariDetail = [];
@@ -23,13 +24,25 @@ class _IndexDetailPenjualanState extends State<IndexDetailPenjualan> {
 
   Future<void> ambilDetail() async {
     try {
-      final data = await supabase.from('detailpenjualan').select();
+      final detail = await supabase.from('detailpenjualan').select();
       setState(() {
-        detailList = List<Map<String, dynamic>>.from(data);
+        detailList = List<Map<String, dynamic>>.from(detail);
         mencariDetail = detailList;
       });
     } catch (e) {
       print('Error: $e');
+    }
+  }
+
+  Future<void> tambahKePenjualan(int TotalHarga, int PelangganID) async {
+    final supabase = Supabase.instance.client;
+
+    final response = await supabase.from('detailpenjualan').insert({
+      'TotalHarga': TotalHarga,
+      'PelangganID': PelangganID,
+    });
+    if (response == null) {
+      print('error');
     }
   }
 
@@ -47,7 +60,9 @@ class _IndexDetailPenjualanState extends State<IndexDetailPenjualan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+        body: Container(
+      decoration: const BoxDecoration(color: Colors.white),
+      child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(10),
@@ -55,6 +70,8 @@ class _IndexDetailPenjualanState extends State<IndexDetailPenjualan> {
               controller: cari,
               decoration: InputDecoration(
                 labelText: "Cari Detail...",
+                labelStyle:
+                    const TextStyle(color: Color.fromARGB(121, 255, 0, 128)),
                 prefixIcon: const Icon(Icons.search,
                     color: Color.fromARGB(121, 255, 0, 128)),
                 border:
@@ -77,17 +94,50 @@ class _IndexDetailPenjualanState extends State<IndexDetailPenjualan> {
                       padding: const EdgeInsets.all(8),
                       itemCount: mencariDetail.length,
                       itemBuilder: (context, index) {
-                        final p = mencariDetail[index];
+                        final d = mencariDetail[index];
                         return Card(
+                          color: const Color.fromARGB(255, 255, 115, 185),
                           elevation: 4,
                           margin: const EdgeInsets.symmetric(vertical: 8),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12)),
+                          child: ListTile(
+                            title: Text(
+                                'ID Detail: ${d['DetailID']?.toString() ?? 'DetailID tidak tersedia'}',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white)),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                    'ID Penjualan: ${d['PenjualanID']?.toString() ?? 'PenjualanID tidak tersedia'}',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white)),
+                                Text(
+                                    'ID Produk: ${d['ProdukID']?.toString() ?? 'ProdukID tidak tersedia'}',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white)),
+                                Text(
+                                    'Jumlah Produk: ${d['JumlahProduk']?.toString() ?? 'Jumlah Produk tidak tersedia'}',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white)),
+                                Text(
+                                    'Total Harga: ${d['Subtotal']?.toString() ?? 'Subtotal tidak tersedia'}',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white)),
+                              ],
+                            ),
+                          ),
                         );
                       },
                     ))
         ],
       ),
-    );
+    ));
   }
 }

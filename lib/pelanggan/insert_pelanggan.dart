@@ -14,22 +14,21 @@ class _InsertPelangganState extends State<InsertPelanggan> {
   final formKey = GlobalKey<FormState>();
   final nama = TextEditingController();
   final alamat = TextEditingController();
-  final nomor = TextEditingController();
+  final ntlp = TextEditingController();
   final supabase = Supabase.instance.client;
 
   Future<void> simpan() async {
     if (formKey.currentState!.validate()) {
-      // Untuk mengcek apakah NamaPelanggan sudah ada
-      final simpanData = await supabase
+      final simpan = await supabase
           .from('pelanggan')
           .select('NamaPelanggan')
           .eq('NamaPelanggan', nama.text)
           .maybeSingle();
 
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Data berhasil disimpan')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Data berhasil disimpan')));
 
-      if (simpanData != null) {
+      if (simpan != null) {
         // Untuk menampilkan pesan error jika data sudah ada
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Tidak boleh ada data ganda!')),
@@ -41,11 +40,11 @@ class _InsertPelangganState extends State<InsertPelanggan> {
       await supabase.from('pelanggan').insert({
         'NamaPelanggan': nama.text,
         'Alamat': alamat.text,
-        'NomorTelepon': nomor.text,
+        'NomorTelepon': ntlp.text,
       });
 
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const HomePage()));
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const HomePage()));
     }
   }
 
@@ -87,7 +86,7 @@ class _InsertPelangganState extends State<InsertPelanggan> {
               const SizedBox(height: 10),
               _buildTextField(alamat, 'Alamat'),
               const SizedBox(height: 10),
-              _buildTextField(nomor, 'Nomor Telepon',
+              _buildTextField(ntlp, 'Nomor Telepon',
                   isNumber:
                       true), // isNumber: true = Input hanya akan menerima angka
               const SizedBox(height: 20),

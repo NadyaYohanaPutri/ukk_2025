@@ -88,6 +88,7 @@ class _IndexUserState extends State<IndexUser> {
                     itemBuilder: (context, index) {
                       final p = user[index];
                       return Card(
+                        color: const Color.fromARGB(255, 255, 115, 185),
                         elevation: 4,
                         margin: const EdgeInsets.symmetric(vertical: 8),
                         shape: RoundedRectangleBorder(
@@ -95,22 +96,33 @@ class _IndexUserState extends State<IndexUser> {
                         child: ListTile(
                           title: Text(
                               p['Username'] ?? 'Username tidak tersedia',
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold)),
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white)),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(p['Password'] ?? 'Tidak tersedia',
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.bold)),
+                                      fontWeight: FontWeight.bold,
+                                      fontStyle: FontStyle.italic,
+                                      color: Colors.white)),
                             ],
                           ),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               IconButton(
-                                icon:
-                                    const Icon(Icons.edit, color: Colors.blue),
+                                icon: const Icon(
+                                  Icons.edit,
+                                  color: Colors.blue,
+                                  shadows: [
+                                    Shadow(
+                                        color: Colors.white,
+                                        blurRadius: 5,
+                                        offset: Offset(2, 2))
+                                  ],
+                                ),
                                 onPressed: () => Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -119,8 +131,16 @@ class _IndexUserState extends State<IndexUser> {
                                 ),
                               ),
                               IconButton(
-                                icon:
-                                    const Icon(Icons.delete, color: Colors.red),
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                  shadows: [
+                                    Shadow(
+                                        color: Colors.white,
+                                        blurRadius: 5,
+                                        offset: Offset(2, 2))
+                                  ],
+                                ),
                                 onPressed: () => konfirmasiHapus(p['UserID']),
                               ),
                             ],

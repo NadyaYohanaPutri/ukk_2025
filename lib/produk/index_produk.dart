@@ -85,6 +85,8 @@ class _IndexProdukState extends State<IndexProduk> {
               controller: cari,
               decoration: InputDecoration(
                 labelText: "Cari Produk...",
+                labelStyle:
+                    const TextStyle(color: Color.fromARGB(121, 255, 0, 128)),
                 prefixIcon: const Icon(Icons.search,
                     color: Color.fromARGB(121, 255, 0, 128)),
                 border:
@@ -119,6 +121,7 @@ class _IndexProdukState extends State<IndexProduk> {
                           );
                         },
                         child: Card(
+                          color: const Color.fromARGB(255, 255, 115, 185),
                           elevation: 4,
                           margin: const EdgeInsets.symmetric(vertical: 8),
                           shape: RoundedRectangleBorder(
@@ -127,7 +130,8 @@ class _IndexProdukState extends State<IndexProduk> {
                             title: Text(
                                 p['NamaProduk'] ?? 'Produk tidak tersedia',
                                 style: const TextStyle(
-                                    fontWeight: FontWeight.bold)),
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white)),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -135,19 +139,28 @@ class _IndexProdukState extends State<IndexProduk> {
                                     "Harga: Rp ${p['Harga'] != null ? double.parse(p['Harga'].toString()).toStringAsFixed(2) : 'Tidak tersedia'}",
                                     style: const TextStyle(
                                         fontStyle: FontStyle.italic,
-                                        color: Colors.grey)),
+                                        color: Colors.white)),
                                 Text(
                                     "Stok: ${p['Stok']?.toString() ?? 'Tidak tersedia'}",
                                     style: const TextStyle(
-                                        fontWeight: FontWeight.bold)),
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white)),
                               ],
                             ),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 IconButton(
-                                  icon: const Icon(Icons.edit,
-                                      color: Colors.blue),
+                                  icon: const Icon(
+                                    Icons.edit,
+                                    color: Colors.blue,
+                                    shadows: [
+                                      Shadow(
+                                          color: Colors.white,
+                                          blurRadius: 5,
+                                          offset: Offset(2, 2))
+                                    ],
+                                  ),
                                   onPressed: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -156,8 +169,16 @@ class _IndexProdukState extends State<IndexProduk> {
                                   ),
                                 ),
                                 IconButton(
-                                  icon: const Icon(Icons.delete,
-                                      color: Colors.red),
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                    shadows: [
+                                      Shadow(
+                                          color: Colors.white,
+                                          blurRadius: 5,
+                                          offset: Offset(2, 2))
+                                    ],
+                                  ),
                                   onPressed: () =>
                                       konfirmasiHapus(p['ProdukID']),
                                 ),
